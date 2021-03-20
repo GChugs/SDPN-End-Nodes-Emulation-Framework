@@ -1,0 +1,84 @@
+#!/usr/bin/python2
+
+from os import sys, path
+if __name__ == '__main__' and __package__ is None:
+    sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+
+import signal
+import inquirer
+import threading
+from inquirer import errors
+from igrid.traffic import Traffic
+
+
+
+def number_validation(answers, current):
+    if not current.isdigit():
+        raise errors.ValidationError(
+            '', reason='input value is not a number, please enter a valid number')
+
+    return True
+
+def choice_validation():
+    questions = [
+        inquirer.List('choice',
+                      message="Choose next process",
+                      choices=['1.Add fault network routine to xisting network',
+                               '2.Exit simulation', '3.Update nodes firmware'],
+                      ),
+    ]
+    return inquirer.prompt(questions).get('choice')
+
+
+if __name__ == "__main__":
+    
+    questions = [
+        inquirer.Text('sensors', message='Number of sensor node(s)?',
+                      validate=number_validation),
+        inquirer.Text(
+            'smart_meters', message='Number of smart meters node(s)?', validate=number_validation),
+        inquirer.Text(
+            'actuators', message='Number of actuator node(s)?', validate=number_validation),
+        inquirer.Text(
+            'plot', message='Plot graph size x,y eg. 200,200')
+    ]
+    
+    answers = inquirer.prompt(questions)
+    sensors = int(answers.get('sensors'))
+    smart_meters = int(answers.get('smart_meters'))
+    actuators = int(answers.get('actuators'))
+    plot = answers.get('plot').split(',')
+    net = Traffic(sensors=sensors, smart_meters=smart_meters,
+                  actuators=actuators, max_x=int(plot[0]), max_y=int(plot[1]))
+
+    net.start()
+
+
+    confirm = [ inquirer.Confirm('confirm', message="Start normal network routine?")]
+    if inquirer.prompt(confirm).get('confirm'):
+        threading.Thread(target=net.send_in_interval).start()
+    
+   
+
+    choice = choice_validation()
+    
+    if '1.' in choice:
+        run_fault = True
+        while run_fault:
+            try:
+                net.send_once()
+            except KeyboardInterrupt:
+                print 'stopping fault network routine'
+                run_fault = False
+                choice = choice_validation()
+                if  '1.' in choice:
+                    run_fault =  True
+                elif '3.' in choice:
+                    net.update_firmware()
+                else:
+                    net.stop()
+                    
+    elif '3.' in choice:
+        net.update_firmware()
+    else:
+        net.stop()
