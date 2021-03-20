@@ -1,13 +1,13 @@
 About
 ====
 
-igrid-network-simulations is sensor network simulator for smart grid.
+Secondary Distribution Power Network (SDPN) End Nodes Emulation Framework for  smart grid networks.
 
 
 Requirements
 ------------
 
-For the agent/AP:
+For running the framework:
 
 - python2.
 - pip.
@@ -19,7 +19,7 @@ Building Simulations
 ---------------------
 
 ```
-  $: git clone https://github.com/RugaCoder/igrid-network-simulations net-sim
+  $: git clone https://github.com/GChugs/SDPN-End-Nodes-Emulation-Framework net-sim
   $: cd net-sim
   $: pip install -r requirements.txt 
   $: python2 bin/igrid-net
