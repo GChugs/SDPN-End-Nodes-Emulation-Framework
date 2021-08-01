@@ -1,7 +1,7 @@
 About
 ====
 
-Secondary Distribution Power Network (SDPN) End Nodes Emulation Framework for  smart grid networks.
+Secondary Distribution Power Network (SDPN) End Nodes Emulation Framework for  Smart Grid networks. A Researcher can customise WiFi based end nodes scenarios to observe different results.
 
 
 Requirements
