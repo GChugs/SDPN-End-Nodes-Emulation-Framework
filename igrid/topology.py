@@ -13,7 +13,7 @@ class IGRID(object):
     net = Mininet_wifi(controller=Controller, link=wmediumd,
                        accessPoint=OVSKernelAP, noise_th=-91,  ac_method='sf')
 
-    def __init__(self, sensors=0, smart_meters=0, actuators=0, max_x=200, max_y=200):
+    def __init__(self, sensors=0, smart_meters=0, actuators=0, max_x=500, max_y=500):
         self.sensors = sensors
         self.smart_meters = smart_meters
         self.actuators = actuators
@@ -146,15 +146,15 @@ class IGRID(object):
 
     def __addAccessPoints__(self):
         ap1 = self.net.addAccessPoint(
-            'ap1', ssid='iGrid-ap1', mode='g', channel='6', model='DI524', position='50,125,0', range='100')
+            'ap1', ssid='iGrid-ap1', mode='g', channel='6', model='DI524', position='50,125,0', range='500')
         self.access_points_nodes.append(ap1)
 
         ap2 = self.net.addAccessPoint(
-            'ap2', ssid='iGrid-ap2', mode='g', channel='1', model='DI524', position='100,75,0', range='100')
+            'ap2', ssid='iGrid-ap2', mode='g', channel='1', model='DI524', position='100,75,0', range='500')
         self.access_points_nodes.append(ap2)
 
         ap3 = self.net.addAccessPoint('ap3', ssid='iGrid-ap3', mode='g',
-                                      channel='3', model='DI524', position='125,125,0', range='100')
+                                      channel='3', model='DI524', position='125,125,0', range='500')
         self.access_points_nodes.append(ap3)
 
     def __generateNodesCoordinates__(self, radius, reference=(0, 0)):
